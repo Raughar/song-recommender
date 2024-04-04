@@ -10,18 +10,18 @@ import dotenv
 import PySimpleGUI as sg
 warnings.filterwarnings("ignore")
 
-#We will start by loading the data
+#WLoading the data
 billboard = pd.read_csv(r'files\billboard_hot_100.csv')
 features = pd.read_csv(r'files\tracks_features.csv')
 
-#Next we will initialize Spotipy
+#Initialize Spotipy
 dotenv.load_dotenv()
 client_id = os.getenv('CLIENT_ID')
 client_secret = os.getenv('CLIENT_SECRET')
 client_credentials_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
-#Creating a function to get the song features, year, duration, explicit, and time signature
+#Function to get the song features
 def get_song_features(track_id):
     track = sp.track(track_id)
     features = sp.audio_features(track_id)
@@ -54,28 +54,28 @@ def get_popular_song(artist):
     top_tracks = sp.artist_top_tracks(artist_id)
     return top_tracks['tracks'][0]['id']
 
-#Now, we will create a dataframe with the features of the songs in the features dataframe
+#Create a dataframe with the features of the songs
 selected_features = features.drop(columns=['id', 'name', 'album', 'album_id', 'artists', 'artist_ids', 'track_number', 'disc_number', 'release_date'])
 
-#Now, we will scale the features
+#Scaling the features
 scaler = StandardScaler()
 scaled_features = scaler.fit_transform(selected_features)
 
-#Using the information from the plot, we will use 4 clusters to group the songs
-kmeans = KMeans(n_clusters=4, init='k-means++', max_iter=300, n_init=10, random_state=0)
+#Clustering the data
+kmeans = KMeans(n_clusters=10, init='k-means++', max_iter=300, n_init=10, random_state=0)
 kmeans.fit(scaled_features)
 
-#Now, I will save the clusters in a new variable
+#Saving the clusters
 cluster = kmeans.predict(scaled_features)
 
-#Now, we will unite the clusters with the features and song information
+#Merging everything
 clustered_features = pd.DataFrame(scaled_features, columns=selected_features.columns)
 clustered_features['name'] = features['name']
 clustered_features['artists'] = features['artists']
 clustered_features['album'] = features['album']
 clustered_features['cluster'] = cluster
 
-# Defining the GUI layout
+#Defining the GUI layout
 layout = [[sg.Text('Song Recommender')],
           [sg.Text('Do you want to search by song or artist?')],
           [sg.Radio('Song', "RADIO1", key='-RADIO1-'), sg.Radio('Artist', "RADIO2", key='-RADIO2-')],
@@ -83,13 +83,13 @@ layout = [[sg.Text('Song Recommender')],
           [sg.Text('Recommendations will appear here:')],
           [sg.Output(size=(40, 10))]]
 
-# Creating the GUI window
+#Creating the GUI window
 window = sg.Window('Song Recommender', layout)
 
 #Initializing the value of select
 select = True
 
-# Defining the event loop
+#Defining the event loop
 while True:
     event, values = window.read()
     if event == sg.WINDOW_CLOSED:

@@ -1,4 +1,5 @@
 /.env
-files/
+files/tracks_features.csv
+files/tracks_data.csv
 /.cache
-/secrets.toml
+.streamlit/

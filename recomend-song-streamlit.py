@@ -10,7 +10,7 @@ import streamlit as st
 warnings.filterwarnings("ignore")
 
 #We will start by loading the data
-url = "https://drive.google.com/file/d/1e3-jlnjjKo0Bi5QNLU6zXz6MtdaUuPXV/view?usp=drive_link"
+url = "https://dl.dropboxusercontent.com/scl/fi/zc5e1lnzzjw7knzh58vgy/tracks_features.csv?rlkey=6lkmcs1z9ik6gjyj92blk9bw4"
 billboard = pd.read_csv(r'files\billboard_hot_100.csv')
 features = pd.read_csv(url)
 
@@ -73,15 +73,6 @@ clustered_features['name'] = features['name']
 clustered_features['artists'] = features['artists']
 clustered_features['album'] = features['album']
 clustered_features['cluster'] = cluster
-
-# Defining the GUI layout
-layout = [[sg.Text('Song Recommender')],
-          [sg.Text('Do you want to search by song or artist?')],
-          [sg.Radio('Song', "RADIO1", key='-RADIO1-'), sg.Radio('Artist', "RADIO2", key='-RADIO2-')],
-          [sg.InputText(key='-INPUT-'), sg.Button('Submit')],
-          [sg.Text('Recommendations will appear here:')],
-          [sg.Output(size=(40, 10))]]
-
 
 #Creting the song recomendation system
 """
