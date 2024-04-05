@@ -27,7 +27,6 @@ def get_billboard_top():
     df.loc[0] = [n1_song[0].text, n1_artist[0].text]
     df['Song'] = df['Song'].str.replace('\n', '').str.replace('\t', '')
     df['Artist'] = df['Artist'].str.replace('\n', '').str.replace('\t', '')
-    df.to_csv('billboard_hot_100.csv', index=False)
     return df
 
 #WLoading the data
