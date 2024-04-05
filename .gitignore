@@ -1,5 +1,4 @@
 /.env
-files/tracks_features.csv
-files/tracks_data.csv
+files/
 /.cache
 .streamlit/

@@ -14,13 +14,14 @@ With this project, I aim to create a song recomendation system. To do that, I ha
 
 - The next step will be to run those features through the KMeans algorithm to assign it a cluster.
 
-- Then, we will recommend a song from that cluster that is no the same song.
+- Then, we will recommend a song from that cluster that is not the same song.
 
-- We will ask the user if he wants a new song recomendation if so, we will give a new song, that is not the same as the two before, by creating a list of the songs given, until the user wants to end the process.
+- We will ask the user if he wants a new song recomendation if so, we will recommend a new song, until the user wants to end the process.
 
 The tools used to make this project were:
 - Python
 - Spotipy library ( https://spotipy.readthedocs.io/en/2.22.1/# )
 - Scikit-learn KMeans model for clustering
+- PySimpleGUI ( https://www.pysimplegui.com/ )
 
-In the future, I want to work upon this project and further improve it, by creating a GUI and new functions.
+Next step would be to create a Streamlit app.

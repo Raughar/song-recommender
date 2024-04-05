@@ -4,14 +4,34 @@ from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 import warnings
 import spotipy
+import requests
+from bs4 import BeautifulSoup
 from spotipy.oauth2 import SpotifyClientCredentials
 import os
 import dotenv
 import PySimpleGUI as sg
 warnings.filterwarnings("ignore")
 
+#Function to get the Billboard Hot 100 songs
+def get_billboard_top():
+    r = requests.get('https://www.billboard.com/charts/hot-100/').content
+    soup = BeautifulSoup(r, 'html.parser')
+    n1_song = soup.find_all('h3', attrs={'class': 'c-title a-no-trucate a-font-primary-bold-s u-letter-spacing-0021 u-font-size-23@tablet lrv-u-font-size-16 u-line-height-125 u-line-height-normal@mobile-max a-truncate-ellipsis u-max-width-245 u-max-width-230@tablet-only u-letter-spacing-0028@tablet'})
+    songs = soup.find_all('h3', attrs={'class': 'c-title a-no-trucate a-font-primary-bold-s u-letter-spacing-0021 lrv-u-font-size-18@tablet lrv-u-font-size-16 u-line-height-125 u-line-height-normal@mobile-max a-truncate-ellipsis u-max-width-330 u-max-width-230@tablet-only'})
+    n1_artist = soup.find_all('span', attrs={'class': 'c-label a-no-trucate a-font-primary-s lrv-u-font-size-14@mobile-max u-line-height-normal@mobile-max u-letter-spacing-0021 lrv-u-display-block a-truncate-ellipsis-2line u-max-width-330 u-max-width-230@tablet-only u-font-size-20@tablet'})
+    artists = soup.find_all('span', attrs={'class': 'c-label a-no-trucate a-font-primary-s lrv-u-font-size-14@mobile-max u-line-height-normal@mobile-max u-letter-spacing-0021 lrv-u-display-block a-truncate-ellipsis-2line u-max-width-330 u-max-width-230@tablet-only'})
+    df = pd.DataFrame({
+        "Song": [song.text for song in songs],
+        "Artist": [artist.text for artist in artists]
+    })
+    df.loc[0] = [n1_song[0].text, n1_artist[0].text]
+    df['Song'] = df['Song'].str.replace('\n', '').str.replace('\t', '')
+    df['Artist'] = df['Artist'].str.replace('\n', '').str.replace('\t', '')
+    df.to_csv('billboard_hot_100.csv', index=False)
+    return df
+
 #WLoading the data
-billboard = pd.read_csv(r'files\billboard_hot_100.csv')
+billboard = get_billboard_top()
 features = pd.read_csv(r'files\tracks_features.csv')
 
 #Initialize Spotipy
