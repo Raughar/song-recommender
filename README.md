@@ -18,10 +18,12 @@ With this project, I aim to create a song recomendation system. To do that, I ha
 
 - We will ask the user if he wants a new song recomendation if so, we will recommend a new song, until the user wants to end the process.
 
+As of the last version, I have created a GUI using PySImpleGUI and a Streamlit app, that you can check here: https://song-recommender-samuel.streamlit.app/
+In the future, I want to improve the GUI by creating a .EXE file and give the Streamlit app a new look.
+
 The tools used to make this project were:
 - Python
 - Spotipy library ( https://spotipy.readthedocs.io/en/2.22.1/# )
 - Scikit-learn KMeans model for clustering
 - PySimpleGUI ( https://www.pysimplegui.com/ )
-
-Next step would be to create a Streamlit app.
+- Streamlit ( https://streamlit.io/ )
