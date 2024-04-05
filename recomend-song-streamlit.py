@@ -7,11 +7,13 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import os
 import streamlit as st
+from pathlib import Path
 warnings.filterwarnings("ignore")
 
 #We will start by loading the data
 url = "https://dl.dropboxusercontent.com/scl/fi/zc5e1lnzzjw7knzh58vgy/tracks_features.csv?rlkey=6lkmcs1z9ik6gjyj92blk9bw4"
-billboard = pd.read_csv(r'files\billboard_hot_100.csv')
+path = Path(__file__).parents[1] / 'files/billboard_hot_100.csv'
+billboard = pd.read_csv(path)
 features = pd.read_csv(url)
 
 #Next we will initialize Spotipy
